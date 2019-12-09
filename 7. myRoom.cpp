@@ -1,4 +1,5 @@
-// Based on the house3D.cpp code
+// Baseaso no código House3D.cpp
+// Procurar função do mouse pra mexer a camêra "Passive"
 
 #include <GL/glut.h>
 #include <stdlib.h>
@@ -23,16 +24,9 @@ float angle = 0.0f;
 
 void init(void) {
     // sky color
-    //  seta o fundo como azul
-    glClearColor(0.0, 0.7, 1.0, 1.0);
+    //  seta a cor do fundo
+    glClearColor(0.2, 0.2, 1.0, 1.0);
 
-}
-
-void drawRoom() {
-    // Front side
-    glPushMatrix();
-    glTranslatef(0.0f, 0.0f, 0.0f);
-    glColor3f(0.0f, 1.0f, 0.0f);
 }
 
 void drawHouse(){
@@ -174,6 +168,109 @@ void drawDoor() {
 
 }
 
+void drawWalls() {
+    glColor3f(0.5f, 0.5f, 0.5f);
+    // Front Wall
+    glBegin(GL_QUADS);
+        glVertex3f(0, 0, 1);
+        glVertex3f(0, 1, 1);
+        glVertex3f(2, 1, 1);
+        glVertex3f(2, 0, 1);
+    glEnd();
+
+    glColor3f(0.0f, 0.5f, 0.0f);
+    // Right Wall
+    glBegin(GL_QUADS);
+        glVertex3f(2, 0, 1); 
+        glVertex3f(2, 1, 1);
+        glVertex3f(2, 1, 0);
+        glVertex3f(2, 0, 0);
+    glEnd();
+
+    glColor3f(0.0f, 0.0f, 0.5f);
+    // Back Wall
+    glBegin(GL_QUADS);
+        glVertex3f(2, 0, 0);
+        glVertex3f(2, 1, 0);
+        glVertex3f(0, 1, 0);
+        glVertex3f(0, 0, 0);
+    glEnd();
+
+    glColor3f(1.0f, 0.5f, 0.0f);
+    // Left Wall
+    glBegin(GL_QUADS);
+        glVertex3f(0, 0, 0);
+        glVertex3f(0, 1, 0);
+        glVertex3f(0, 1, 1);
+        glVertex3f(0, 0, 1);
+    glEnd();
+}
+
+void drawRoof() {
+    glColor3f(0.5f, 0.5f, 0.5f);
+    // Front Roof
+    glBegin(GL_QUADS);
+        glVertex3f(-0.2, 1, 1);
+        glVertex3f(0, 1.2, 1);
+        glVertex3f(2, 1.2, 1);
+        glVertex3f(2.2, 1, 1);
+    glEnd();
+
+    glColor3f(0.0f, 0.5f, 0.0f);
+    // Right Roof
+    glBegin(GL_QUADS);
+        glVertex3f(2.2, 1, 1); 
+        glVertex3f(2, 1.2, 1);
+        glVertex3f(2, 1.2, -0.2);
+        glVertex3f(2, 1, -0.2);
+    glEnd();
+
+    glColor3f(0.0f, 0.0f, 0.5f);
+    // Back Wall
+    glBegin(GL_QUADS);
+        glVertex3f(2, 1, -0.2);
+        glVertex3f(2, 1.2, 0);
+        glVertex3f(-0.2, 1.2, -0.2);
+        glVertex3f(-0.2, 1, -0.2);
+    glEnd();
+
+    glColor3f(1.0f, 0.5f, 0.0f);
+    // Left Wall
+    glBegin(GL_QUADS);
+        glVertex3f(0,0,0);
+        glVertex3f(0,1,0);
+        glVertex3f(0,1,1);
+        glVertex3f(0,0,1);
+    glEnd();
+
+    glColor3f(0.0f, 0.0f, 0.0f);
+    glBegin(GL_QUADS);
+        glVertex3f(0,1.2,1);
+        glVertex3f(0,1.2,0);
+        glVertex3f(2,1.2,0);
+        glVertex3f(2,1.2,1);
+    glEnd();
+
+}
+
+void drawStructure() {
+
+    drawWalls();
+    drawRoof();
+
+}
+
+void drawRoom() {
+    // Front side
+    glPushMatrix();
+    glTranslatef(0.0f, 0.0f, 0.0f);
+    glColor3f(0.0f, 0.5f, 0.5f);
+
+    drawStructure();
+}
+
+
+
 void changeSize(int w, int h){
 
     // Prevent a divide by zero, when window is too short
@@ -212,7 +309,7 @@ void renderScene(void){
     gluLookAt(x, 1.0f, z, x+lx, 1.0f, z+lz, 0.0f, 1.0f, 0.0f);
 
     // Draw ground
-    glColor3f(0.0, 0.65, 0.0);
+    glColor3f(1.0, 1.0, 1.0);
         glBegin(GL_QUADS);
         glVertex3f(-100.0f, 0.0f, -100.0f);
         glVertex3f(-100.0f, 0.0f, 100.0f);
@@ -221,7 +318,8 @@ void renderScene(void){
     glEnd();
 
     //drawHouse();
-    drawDoor();
+    drawRoom();
+    //drawDoor();
 
     glFlush(); // atualiza perspectiva. GLUT_SINGLE 
     glutSwapBuffers(); // atualiza perspectiva. GLUT_DOUBLE
